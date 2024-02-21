@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Diabetes Type Predictor</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='diabetes-favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .block {
+            flex: 0 0 30%;
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin-right: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .block:last-child {
+            margin-right: 0;
+        }
+
+        .block h2 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .block img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+		.header {
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: #ffffff;
+            width: 100%;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .grid-item.red {
+            background-color: #db0f0f;
+            /* Light red */
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .grid-item.red:hover::after {
+            content: attr(data-info);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+
+        .grid-item {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Website Title -->
+	<!-- Header -->
+    <div class="header">
+        <h2 class='container-heading'><span class="heading_font">Diabetes Type Predictor</span></h2>
+        <div class='description'>
+            <p>This is for informational purposes only. This information does not constitute medical advice or diagnosis😊</p>
+        </div>
+    </div>
+
+    <!-- Result -->
+    <div class="results" >
+        {% if prediction==1 %}
+            <h1>Prediction: <span class='danger'>Oops! You have TYPE-1 DIABETES.</span></h1>
+            <h2>Risk Factors</h2>
+            <div class="grid-container">
+               
+        {% for key, value in user_input.items() %}
+        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+            <!-- Check if the option is checked -->
+            {% set additional_info = '' %}
+            {% if key == 'glucose' and value > 140 %}
+                {% set additional_info = 'High glucose level' %}
+            {% elif key == 'insulin_taken' and value == 1 %}
+                {% set additional_info = 'Insulin taken' %}
+            {% elif key == 'blood_pressure' and value > 140 %}
+                {% set additional_info = 'High blood pressure' %}
+            {% elif key == 'prediabetes' and value == 1 %}
+                {% set additional_info = 'Have prediabetes.' %}
+            {% elif key == 'gestation_previous_pregnancy' and value == 1 %}
+                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
+            {% elif key == 'age' and value < 20 %}
+                {% set additional_info = 'Being 45 years or older' %}
+            {% elif key == 'sedentary_lifestyle' and value==1 %}
+                {% set additional_info = 'Being physically active less than 3 times a week' %}
+            {% endif %}
+
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}" >
+                <strong>{{ key }}:</strong> {{ value }}
+            </div>
+        {% endif %}
+    {% endfor %}
+         </div>
+            <div class="container">
+                <div class="block">
+                    <h2>Symptoms</h2>
+                    <a href="https://www.ezmedlearning.com/blog/type-1-diabetes-mellitus-symptoms-treatment" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type1Symptoms.png') }}"  alt="Symptoms Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Causes</h2>
+                    <a href="https://www.ezmedlearning.com/blog/type-1-diabetes-mellitus-symptoms-treatment" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type1Causes.jpeg') }}"  alt="Suggestions Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Food to Follow</h2>
+                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-1-diabetes" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
+                        Click here for more info
+                    </a>
+                </div>
+            </div>
+           
+        {% elif prediction==2 %}
+            <!-- Similar structure for Type-2 Diabetes -->
+			<h1>Prediction: <span class='danger'>Oops! You have TYPE-2 DIABETES.</span></h1>
+            <h2>Risk Factors</h2>
+            <div class="grid-container">
+               
+        {% for key, value in user_input.items() %}
+        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+            <!-- Check if the option is checked -->
+            {% set additional_info = '' %}
+            {% if key == 'glucose' and value > 140 %}
+                {% set additional_info = 'High glucose level' %}
+            {% elif key == 'insulin_taken' and value == 1 %}
+                {% set additional_info = 'Insulin taken' %}
+            {% elif key == 'blood_pressure' and value > 50 %}
+                {% set additional_info = 'High blood pressure' %}
+            {% elif key == 'prediabetes' and value == 1 %}
+                {% set additional_info = 'Have prediabetes.' %}
+            {% elif key == 'gestation_previous_pregnancy' and value ==1 %}
+                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
+            {% elif key == 'age' and value >40 %}
+                {% set additional_info = 'Being 45 years or older' %}
+            {% elif key == 'sedentary_lifestyle' and value==1 %}
+                {% set additional_info = 'Being physically active less than 3 times a week' %}
+            {% endif %}
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {{ value }}
+            </div>
+        {% endif %}
+    {% endfor %}
+         </div>
+
+            <div class="container">
+                <div class="block">
+                    <h2>Symptoms</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Symptoms Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Causes</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Suggestions Image">
+                        Click here more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Food to Follow</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
+                        Click here for more info
+                    </a>
+                </div>
+            </div>
+           
+        {% elif prediction==3 %}
+            <!-- Similar structure for Gestational Diabetes -->
+			<h1>Prediction: <span class='danger'>Oops! You have Gestational DIABETES.</span></h1>
+            <h2>Risk Factors</h2>
+            <div class="grid-container">
+               
+        {% for key, value in user_input.items() %}
+        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+            <!-- Check if the option is checked -->
+            {% set additional_info = '' %}
+            {% if key == 'blood_pressure' and value > 0 %}
+                {% set additional_info = 'High bloodPressure level' %}
+            {% elif key == 'prediabetes' and value == 1 %}
+                {% set additional_info = 'Have prediabetes.' %}
+            {% elif key == 'gestation_previous_pregnancy' and value ==1 %}
+                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
+            {% elif key == 'sedentary_lifestyle' and value==1 %}
+                {% set additional_info = 'Being physically active less than 3 times a week' %}
+            {% elif key == 'pcos' and value==1 %}
+                {% set additional_info = 'Having polycystic ovary syndrome (PCOS)' %}
+            {% elif key == 'family_history' and value== 1 %}
+                {% set additional_info = 'Having an immediate family member with diabetes.' %}
+            
+            {% endif %}
+
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {{ value }}
+            </div>
+        {% endif %}
+    {% endfor %}
+         </div>
+            <div class="container">
+                <div class="block">
+                    <h2>Symptoms</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='GestationalSymtoms.png') }}"  alt="Symptoms Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Causes</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='GestationalCauses.jpg') }}"  alt="Suggestions Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Food to Follow</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='GestationalFood.jpg') }}"  alt="Food Image">
+                        Click here for more info
+                    </a>
+                </div>
+            </div>
+           
+        {% elif prediction==0 %}
+            <h1>Prediction: <span class='safe'>Great! You DON'T have diabetes.</span></h1>
+            <div class="grid-container">
+                {% for key, value in user_input.items() %}
+                {% if value!=0 and value != 1.34934640522875 and  value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+                <!-- Check if the option is checked -->
+                <div class="grid-item"><strong>{{ key }}:</strong> {{ value }}</div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <!-- Provide some general information -->
+            <div class="container">
+                <div class="block">
+                    <h2>Symptoms</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}" alt="Symptoms Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Causes</h2>
+                    <a href="#" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}" alt="Suggestions Image">
+                        Click here for more info
+                    </a>
+                </div>
+                <div class="block">
+                    <h2>Food to Follow</h2>
+                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-1-diabetes" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
+                        Click here for more info
+                    </a>
+                </div>
+            </div>
+            
+        {% endif %}
+
+        
+    </div>
+
+    <!-- Footer -->
+    <div class='footer'>
+        <!-- <div class="contact">
+           <a target="_blank" href="https://github.com/program333"><i class="fab fa-github fa-lg contact-icon"></i></a>
+           <a target="_blank" href="https://www.linkedin.com/in/devindra-hirabatti-4b4b3520a/"><i class="fab fa-linkedin fa-lg contact-icon"></i></a>
+       </div>
+       <p class='footer-description'>Project by Rushab,Suraj,Vijay,Devindra</p> -->
+    </div> 
+</body>
+</html>
