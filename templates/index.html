@@ -104,26 +104,28 @@
        <!-- Sidebar -->
 <div class="sidebar">
     <h2 class='container-heading'><span class="heading_font">Options</span></h2>
+    <label class="sidebar-checkbox" title="Name of the individual ">
+        <input type="checkbox" id="nameCheckbox" checked > Name
+    </label>
     <label class="sidebar-checkbox" title="Age of the individual (years)">
         <input type="checkbox" id="ageCheckbox" checked > Age (years)
     </label>
     <label class="sidebar-checkbox" title="Sex of the individual (0 for Male, 1 for Female)">
         <input type="checkbox" id="sexCheckbox" checked> Sex
     </label>
-    <label class="sidebar-checkbox" title="Number of pregnancies">
-        <input type="checkbox" id="pregnanciesCheckbox" checked > Number of Pregnancies
-    </label>
+    
     <label class="sidebar-checkbox" title="Glucose concentration in the blood (mg/dL) Glucose refers to the concentration of sugar in the blood, typically measured in milligrams per deciliter (mg/dL).">
         <input type="checkbox" id="glucoseCheckbox" checked> Glucose (mg/dL)
     </label>
     <label class="sidebar-checkbox" title="Blood pressure measurement (mmHg) Blood Pressure refers to the force of blood against the walls of the arteries as the heart pumps it around the body, measured in millimeters of mercury (mmHg).">
         <input type="checkbox" id="bloodPressureCheckbox" checked> Blood Pressure (mmHg)
     </label>
-    <label class="sidebar-checkbox" title="Thickness of skin (mm) Skin Thickness (mm) indicates the thickness of the skin, typically measured in millimeters, which may be relevant for certain medical conditions or assessments such as insulin injection depth.">
-        <input type="checkbox" id="skinThicknessCheckbox" checked> Skin Thickness (mm)
-    </label>
+    
     <label class="sidebar-checkbox" title="Body Mass Index (kg/m²) Body Mass Index (BMI) is a measure of body fat based on height and weight, calculated by dividing weight in kilograms by the square of height in meters. " >
         <input type="checkbox" id="bmiCheckbox" checked> Body Mass Index (kg/m²)
+    </label>
+    <label class="sidebar-checkbox" title="Number of pregnancies">
+        <input type="checkbox" id="pregnanciesCheckbox"  > Number of Pregnancies
     </label>
     <label class="sidebar-checkbox" title="Function that represents the likelihood of diabetes based on family history">
         <input type="checkbox" id="dpfCheckbox" > Diabetes Pedigree Function
@@ -137,6 +139,9 @@
     </label>
     <label class="sidebar-checkbox" title="HDL (High-Density Lipoprotein) level HDL (High-Density Lipoprotein) refers to the type of cholesterol commonly known as good cholesterol, as it helps remove other forms of cholesterol from the bloodstream, reducing the risk of heart disease.">
         <input type="checkbox" id="hdlCheckbox" > HDL
+    </label>
+    <label class="sidebar-checkbox" title="Thickness of skin (mm) Skin Thickness (mm) indicates the thickness of the skin, typically measured in millimeters, which may be relevant for certain medical conditions or assessments such as insulin injection depth.">
+        <input type="checkbox" id="skinThicknessCheckbox" > Skin Thickness (mm)
     </label>
     <label class="sidebar-checkbox" title="Family history of diabetes (1 for Yes, 0 for No) Family History indicates whether there is a history of diabetes in the individual's family, serving as a potential risk factor for the development of diabetes.">
         <input type="checkbox" id="familyHistoryCheckbox"> Family History
@@ -170,17 +175,18 @@
  <!-- Text Area -->
         <div class="ml-container">
             <form action="{{ url_for('predict') }}" method="POST">
+                <input class="form-input" type="text" id="nameInput" name="name" placeholder="Name  eg. John" style="display: block;">
                 <input class="form-input" type="text" id="ageInput" name="age" placeholder="Age (years) eg. 30" style="display: block;">
                 <input class="form-input" type="text" id="sexInput" name="sex" placeholder="Sex eg. 0-Male/1-Female" style="display: none;">
-                <input class="form-input" type="text" id="pregnanciesInput" name="pregnancies" placeholder="Number of Pregnancies eg. 0" style="display: block;">
                 <input class="form-input" type="text" id="glucoseInput" name="glucose" placeholder="Glucose (mg/dL) eg. 80" style="display: block;">
                 <input class="form-input" type="text" id="bloodPressureInput" name="bloodpressure" placeholder="Blood Pressure (mmHg) eg. 80" style="display: block;">
-                <input class="form-input" type="text" id="skinThicknessInput" name="skinthickness" placeholder="Skin Thickness (mm) eg. 20" style="display: block;">
                 <input class="form-input" type="text" id="bmiInput" name="bmi" placeholder="Body Mass Index (kg/m²) eg. 23.1" style="display: block;">
+                <input class="form-input" type="text" id="pregnanciesInput" name="pregnancies" placeholder="Number of Pregnancies eg. 0" style="display: block;">
                 <input class="form-input" type="text" id="dpfInput" name="dpf" placeholder="Diabetes Pedigree Function eg. 0.52" style="display: block;">
                 <input class="form-input" type="text" id="weightInput" name="weight" placeholder="Weight (kg) eg. 60.5" style="display: none;">
                 <input class="form-input" type="text" id="heightInput" name="height" placeholder="Height (m) eg. 1.5" style="display: none;">
                 <input class="form-input" type="text" id="hdlInput" name="hdl" placeholder="HDL eg. 50" style="display: none;">
+                <input class="form-input" type="text" id="skinThicknessInput" name="skinthickness" placeholder="Skin Thickness (mm) eg. 20" style="display: block;">
                 <input class="form-input" type="text" id="familyHistoryInput" name="familyHistory" placeholder="Family History eg. 1-Yes/0-No" style="display: none;">
                 <input class="form-input" type="text" id="hba1cInput" name="hba1c" placeholder="HbA1c eg. 1-Yes/0-No" style="display: none;">
                 <input class="form-input" type="text" id="autoantibodiesInput" name="autoantibodies" placeholder="Autoantibodies eg. 1-Yes/0-No" style="display: none;">
@@ -214,6 +220,7 @@
 
         // Toggle visibility for each input based on the corresponding checkbox
         toggleInputVisibility('sexCheckbox', 'sexInput');
+        toggleInputVisibility('nameCheckbox', 'nameInput');
         toggleInputVisibility('pregnanciesCheckbox', 'pregnanciesInput');
         toggleInputVisibility('glucoseCheckbox', 'glucoseInput');
         toggleInputVisibility('bloodPressureCheckbox', 'bloodPressureInput');
@@ -234,6 +241,49 @@
         toggleInputVisibility('sedentaryLifestyleCheckbox', 'sedentaryLifestyleInput');
         toggleInputVisibility('prediabetesCheckbox', 'prediabetesInput');
 
+        // Function to toggle the "Pregnancies" input field based on the sex selection
+    function togglePregnanciesInput() {
+        const sexInput = document.getElementById('sexInput');
+        const pregnanciesInput = document.getElementById('pregnanciesInput');
+
+        // If sex is male (0), disable pregnancies input; otherwise, enable it
+        pregnanciesInput.disabled = sexInput.value === '0';
+    }
+
+    // Call the function initially
+    togglePregnanciesInput();
+
+    // Add event listener to sex input to call the function when changed
+    document.getElementById('sexInput').addEventListener('change', togglePregnanciesInput);
+
+
+    function toggleGestationHistoryInput() {
+        const sexInput = document.getElementById('sexInput');
+        const gestationInput = document.getElementById('gestationInput');
+
+        // If sex is male (0), disable pregnancies input; otherwise, enable it
+        gestationInput.disabled = sexInput.value === '0';
+    }
+
+    // Call the function initially
+    toggleGestationHistoryInput();
+
+    // Add event listener to sex input to call the function when changed
+    document.getElementById('sexInput').addEventListener('change', toggleGestationHistoryInput);
+
+    function togglepcosHistoryInput() {
+        const sexInput = document.getElementById('sexInput');
+        const pcosInput = document.getElementById('pcosInput');
+
+        // If sex is male (0), disable pregnancies input; otherwise, enable it
+        pcosInput.disabled = sexInput.value === '0';
+    }
+
+    // Call the function initially
+    togglepcosHistoryInput();
+
+    // Add event listener to sex input to call the function when changed
+    document.getElementById('sexInput').addEventListener('change', togglepcosHistoryInput);
     </script>
 
 </body>

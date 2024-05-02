@@ -83,6 +83,18 @@
             padding: 10px;
             border-radius: 5px;
         }
+        .view-report-button {
+            position: fixed;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -104,21 +116,37 @@
             <div class="grid-container">
                
         {% for key, value in user_input.items() %}
-        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+        {% if key == 'sex' %}
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {% if user_input.sex == 0 %}
+                Male
+            {% else %}
+                Female
+            {% endif %}
+            </div>
+        {%endif%}
+        {% if key != 'sex' and value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
             <!-- Check if the option is checked -->
             {% set additional_info = '' %}
-            {% if key == 'glucose' and value > 140 %}
-                {% set additional_info = 'High glucose level' %}
+            {% if key == 'pregnancies' and value > 0 %}
+                {% set additional_info = 'Type 1 Diabetes can develop during pregnancy (gestational diabetes), increasing the risk of Type 1 Diabetes in offspring.' %}
             {% elif key == 'insulin_taken' and value == 1 %}
-                {% set additional_info = 'Insulin taken' %}
+                {% set additional_info = 'Since Type 1 diabetes is characterized by the bodys inability to produce insulin, insulin therapy is essential for managing blood sugar levels ' %}
             {% elif key == 'blood_pressure' and value > 140 %}
                 {% set additional_info = 'High blood pressure' %}
             {% elif key == 'prediabetes' and value == 1 %}
                 {% set additional_info = 'Have prediabetes.' %}
-            {% elif key == 'gestation_previous_pregnancy' and value == 1 %}
-                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
-            {% elif key == 'age' and value < 20 %}
-                {% set additional_info = 'Being 45 years or older' %}
+            {% elif key == 'bmi' and value > 25 %}
+                {% set additional_info = 'Most adults with a BMI of 25 or higher are overweight and have a higher risk of developing
+                type 1 diabetes.' %}
+            {% elif key == 'hba1c' and value == 1 %}
+                {% set additional_info = 'HbA1c is your average blood glucose (sugar) levels for the last two to three months. If you have diabetes, an ideal HbA1c level is 48mmol/mol (6.5%) or below.' %}
+            {% elif key == 'age' and value > 30 %}
+                {% set additional_info = ' Type 1 Diabetes often develops in children, adolescents, and young adults.' %}
+            {% elif key == 'autoantibodies' and value ==1 %}
+                {% set additional_info = 'Autoantibodies are markers of beta cell autoimmunity in type 1 diabetes.' %}
+            {% elif key == 'family_history' and value == 1 %}
+                {% set additional_info = 'Having a family history of diabetes, especially in close relatives like parents or siblings, increases the risk' %}
             {% elif key == 'sedentary_lifestyle' and value==1 %}
                 {% set additional_info = 'Being physically active less than 3 times a week' %}
             {% endif %}
@@ -129,6 +157,7 @@
         {% endif %}
     {% endfor %}
          </div>
+         <!-- Type 1 -->
             <div class="container">
                 <div class="block">
                     <h2>Symptoms</h2>
@@ -147,7 +176,7 @@
                 <div class="block">
                     <h2>Food to Follow</h2>
                     <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-1-diabetes" target="_blank"> <!-- Add your link here -->
-                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
+                        <img src="{{ url_for('static', filename='Type1Food.png') }}"  alt="Food Image">
                         Click here for more info
                     </a>
                 </div>
@@ -160,50 +189,67 @@
             <div class="grid-container">
                
         {% for key, value in user_input.items() %}
-        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+        {% if key == 'sex' %}
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {% if user_input.sex == 0 %}
+                Male
+            {% else %}
+                Female
+            {% endif %}
+            </div>
+        {%endif%}
+       
+        {% if key != 'sex' and value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
             <!-- Check if the option is checked -->
             {% set additional_info = '' %}
-            {% if key == 'glucose' and value > 140 %}
+            {% if key == 'glucose' and value > 120 %}
                 {% set additional_info = 'High glucose level' %}
-            {% elif key == 'insulin_taken' and value == 1 %}
-                {% set additional_info = 'Insulin taken' %}
-            {% elif key == 'blood_pressure' and value > 50 %}
-                {% set additional_info = 'High blood pressure' %}
+            {% elif key == 'family_history' and value == 1 %}
+                {% set additional_info = 'Having a family history of Type 2 Diabetes or inheriting certain genetic traits increases susceptibility.' %}
+            {% elif key == 'pcos' and value ==1 %}
+                {% set additional_info = 'PCOS, a common hormonal disorder in women of reproductive age, is associated with insulin resistance and an increased risk of Type 2 Diabetes.' %}
+    
             {% elif key == 'prediabetes' and value == 1 %}
                 {% set additional_info = 'Have prediabetes.' %}
+            {% elif key == 'bmi' and value > 25 %}
+                {% set additional_info = 'Most adults with a BMI of 25 or higher are overweight and have a higher risk of developing
+                type 2 diabetes.' %}
             {% elif key == 'gestation_previous_pregnancy' and value ==1 %}
-                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
-            {% elif key == 'age' and value >40 %}
-                {% set additional_info = 'Being 45 years or older' %}
+                {% set additional_info = 'have a history of gestational diabetes, a type of diabetes that develops during pregnancy' %}
+            {% elif key == 'age' and value > 45 %}
+                {% set additional_info = 'Type 2 Diabetes risk increases with age, particularly after 45 years.' %}
             {% elif key == 'sedentary_lifestyle' and value==1 %}
-                {% set additional_info = 'Being physically active less than 3 times a week' %}
+                {% set additional_info = 'are not physically active, because of physical limitations, a sedentary lifestyle, or a job that requires sitting for long periods of time.' %}
             {% endif %}
+
+            
             <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
                 <strong>{{ key }}:</strong> {{ value }}
             </div>
+          
         {% endif %}
     {% endfor %}
          </div>
-
+            <!-- Type 2 -->
             <div class="container">
                 <div class="block">
                     <h2>Symptoms</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="https://www.mayoclinic.org/diseases-conditions/type-2-diabetes/symptoms-causes/syc-20351193" target="_blank"> <!-- Add your link here -->
                         <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Symptoms Image">
                         Click here for more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Causes</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
-                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Suggestions Image">
+                    <a href="https://www.niddk.nih.gov/health-information/diabetes/overview/symptoms-causes" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Causes.jpg') }}"  alt="Causes Image">
                         Click here more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Food to Follow</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
-                        <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
+                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-2-diabetes" target="_blank"> <!-- Add your link here -->
+                        <img src="{{ url_for('static', filename='Type2Food.jpg') }}"  alt="Food Image">
                         Click here for more info
                     </a>
                 </div>
@@ -216,21 +262,31 @@
             <div class="grid-container">
                
         {% for key, value in user_input.items() %}
-        {% if value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+        {% if key == 'sex' %}
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {% if user_input.sex == 0 %}
+                Male
+            {% else %}
+                Female
+            {% endif %}
+            </div>
+        {%endif%}
+        {% if key != 'sex' and value != 0 and value != 1.34934640522875 and value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
             <!-- Check if the option is checked -->
             {% set additional_info = '' %}
-            {% if key == 'blood_pressure' and value > 0 %}
+            {% if key == 'blood_pressure' and value > 140 %}
                 {% set additional_info = 'High bloodPressure level' %}
             {% elif key == 'prediabetes' and value == 1 %}
                 {% set additional_info = 'Have prediabetes.' %}
+            
             {% elif key == 'gestation_previous_pregnancy' and value ==1 %}
-                {% set additional_info = 'Having had gestational diabetes during a previous pregnancy.' %}
+                {% set additional_info = 'Women who have had gestational diabetes in a previous pregnancy are more likely to develop it in subsequent pregnancies.' %}
             {% elif key == 'sedentary_lifestyle' and value==1 %}
-                {% set additional_info = 'Being physically active less than 3 times a week' %}
+                {% set additional_info = 'Lack of physical activity or a sedentary lifestyle can contribute to the development of gestational diabetes.' %}
             {% elif key == 'pcos' and value==1 %}
-                {% set additional_info = 'Having polycystic ovary syndrome (PCOS)' %}
+                {% set additional_info = 'Women with PCOS have a higher risk of developing gestational diabetes.' %}
             {% elif key == 'family_history' and value== 1 %}
-                {% set additional_info = 'Having an immediate family member with diabetes.' %}
+                {% set additional_info = 'A family history of Type 2 Diabetes or Gestational Diabetes increases the risk of developing Gestational Diabetes.' %}
             
             {% endif %}
 
@@ -240,24 +296,25 @@
         {% endif %}
     {% endfor %}
          </div>
+            <!-- Gestational -->
             <div class="container">
                 <div class="block">
                     <h2>Symptoms</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="https://www.nhs.uk/conditions/gestational-diabetes/" target="_blank"> <!-- Add your link here -->
                         <img src="{{ url_for('static', filename='GestationalSymtoms.png') }}"  alt="Symptoms Image">
                         Click here for more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Causes</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="https://www.mayoclinic.org/diseases-conditions/gestational-diabetes/symptoms-causes/syc-20355339" target="_blank"> <!-- Add your link here -->
                         <img src="{{ url_for('static', filename='GestationalCauses.jpg') }}"  alt="Suggestions Image">
                         Click here for more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Food to Follow</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/gestational-diabetes" target="_blank"> <!-- Add your link here -->
                         <img src="{{ url_for('static', filename='GestationalFood.jpg') }}"  alt="Food Image">
                         Click here for more info
                     </a>
@@ -268,41 +325,57 @@
             <h1>Prediction: <span class='safe'>Great! You DON'T have diabetes.</span></h1>
             <div class="grid-container">
                 {% for key, value in user_input.items() %}
-                {% if value!=0 and value != 1.34934640522875 and  value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
+                {% if key == 'sex' %}
+            <div class="grid-item {% if additional_info %} red {% endif %}" title="{{ additional_info }}">
+                <strong>{{ key }}:</strong> {% if user_input.sex == 0 %}
+                Male
+            {% else %}
+                Female
+            {% endif %}
+            </div>
+        {%endif%}
+                {% if key != 'sex' and value!=0 and value != 1.34934640522875 and  value != 115.98145285935 and value != 120.89453125 and value != 20.5364583333333 and value != 38.8545751633986 and value != 46.4718700475435 and value != 28.1492545889596 and value != 0.471876302083333 %}
                 <!-- Check if the option is checked -->
                 <div class="grid-item"><strong>{{ key }}:</strong> {{ value }}</div>
                 {% endif %}
                 {% endfor %}
             </div>
             <!-- Provide some general information -->
-            <div class="container">
+            <!--
+                <div class="container">
                 <div class="block">
                     <h2>Symptoms</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="#" target="_blank"> 
                         <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}" alt="Symptoms Image">
                         Click here for more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Causes</h2>
-                    <a href="#" target="_blank"> <!-- Add your link here -->
+                    <a href="#" target="_blank"> 
                         <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}" alt="Suggestions Image">
                         Click here for more info
                     </a>
                 </div>
                 <div class="block">
                     <h2>Food to Follow</h2>
-                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-1-diabetes" target="_blank"> <!-- Add your link here -->
+                    <a href="https://www.diabetes.org.uk/guide-to-diabetes/enjoy-food/eating-with-diabetes/i-have-type-1-diabetes" target="_blank"> 
                         <img src="{{ url_for('static', filename='Type2Symptoms.jpg') }}"  alt="Food Image">
                         Click here for more info
                     </a>
                 </div>
-            </div>
+            </div>>
+        -->
             
         {% endif %}
 
         
     </div>
+
+   <!-- Add a button/link to view and print the report card -->
+
+
+<button class="view-report-button" onclick="location.href='/report-card'">View Report</button>
 
     <!-- Footer -->
     <div class='footer'>

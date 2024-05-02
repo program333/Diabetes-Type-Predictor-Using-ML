@@ -1,5 +1,5 @@
 # Importing essential libraries
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import pickle
 import numpy as np
 
@@ -8,16 +8,22 @@ filename = 'diabetes-type-predictor1.pkl'
 rfc = pickle.load(open(filename, 'rb'))
 
 app = Flask(__name__)
+global_prediction = None
+global_user_input = None
+
 
 @app.route('/')
 def home():
 	return render_template('index.html')
 
+
 @app.route('/predict', methods=['POST'])
 
 def predict():
+    global global_prediction,global_user_input
     if request.method == 'POST':
         # Extract input values from the form with default values
+        name = request.form.get('name')
         age = int(request.form.get('age')) 
         sex = int(request.form.get('sex')) if request.form.get('sex') else 1
         pregnancies = int(request.form.get('pregnancies'))  if request.form.get('pregnancies') else 0
@@ -44,10 +50,11 @@ def predict():
                           family_history, pregnancies, glucose, blood_pressure, skin_thickness,
                           dpf, gestation_previous_pregnancy, hdl, pcos, sedentary_lifestyle, prediabetes]])
 
-        my_prediction = rfc.predict(data)
-
+        my_prediction = rfc.predict(data)  
+        global_prediction = my_prediction
         
         user_input = {
+            'name':name,
             'age': age,
             'sex': sex,
             'pregnancies': pregnancies,
@@ -69,8 +76,23 @@ def predict():
             'sedentary_lifestyle': sedentary_lifestyle,
             'prediabetes': prediabetes
         }
+        global_user_input = user_input
+        
+       
 
         return render_template('result.html', prediction=my_prediction, user_input=user_input)
+
+# Modify your Flask app to handle the /report-card endpoint
+@app.route('/report-card')
+def report_card():
+    global global_prediction, global_user_input  # Access the global variables
+
+    if global_prediction is not None and global_user_input is not None:
+        # Pass prediction and user input data to the report card template
+        return render_template('report_card.html', prediction=global_prediction, user_input=global_user_input)
+    else:
+        # If prediction or user input data is not available, handle it accordingly
+        return "Prediction or user input data not found."
 
 if __name__ == '__main__':
 	app.run(debug=True)
