@@ -94,5 +94,5 @@ def report_card():
         # If prediction or user input data is not available, handle it accordingly
         return "Prediction or user input data not found."
 
-if __name__ == '__main__':
-	app.run(debug=True)
+#if __name__ == '__main__':
+#	app.run(debug=True)
